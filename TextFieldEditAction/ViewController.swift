@@ -9,14 +9,17 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let textfield01 = UITextField()
     var surveillanceLabel01 = UILabel()
+    let textfield02 = UITextField()
     var surveillanceLabel02 = UILabel()
+    let textfield03 = UITextField()
     var surveillanceLabel03 = UILabel()
+    let button01 = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
       
-        let textfield01 = UITextField()
         textfield01.frame = CGRect(x: view.frame.maxX / 10, y: view.frame.maxY / 6.7, width: view.frame.width - (view.frame.maxX / 5), height: 40)
         textfield01.placeholder = "3文字以上入力して下さい"
         textfield01.layer.cornerRadius = 10.0
@@ -32,7 +35,6 @@ class ViewController: UIViewController {
         surveillanceLabel01.font = UIFont.boldSystemFont(ofSize: 13)
         view.addSubview(surveillanceLabel01)
         
-        let textfield02 = UITextField()
         textfield02.frame = CGRect(x: view.frame.maxX / 10, y: view.frame.maxY / 3.76, width: view.frame.width - (view.frame.maxX / 5), height: 40)
         textfield02.placeholder = "5文字以上入力して下さい"
         textfield02.layer.cornerRadius = 10.0
@@ -48,8 +50,6 @@ class ViewController: UIViewController {
         surveillanceLabel02.font = UIFont.boldSystemFont(ofSize: 13)
         view.addSubview(surveillanceLabel02)
         
-
-        let textfield03 = UITextField()
         textfield03.frame = CGRect(x: view.frame.maxX / 10, y: view.frame.maxY / 2.61, width: view.frame.width - (view.frame.maxX / 5), height: 40)
         textfield03.placeholder = "8文字以上入力して下さい"
         textfield03.layer.cornerRadius = 10.0
@@ -65,9 +65,8 @@ class ViewController: UIViewController {
         surveillanceLabel03.font = UIFont.boldSystemFont(ofSize: 13)
         view.addSubview(surveillanceLabel03)
         
-        let button01 = UIButton()
         button01.frame = CGRect(x: view.frame.maxX / 10, y: view.frame.maxY / 1.79, width: view.frame.width - (view.frame.width / 5), height: view.frame.height / 20)
-        button01.setTitle("Not start", for: .normal)
+        button01.setTitle("NotStart", for: .normal)
         button01.titleLabel?.textColor = .white
         button01.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
         button01.backgroundColor = .systemRed
@@ -90,10 +89,20 @@ class ViewController: UIViewController {
             surveillanceLabel01.text = "入力完了"
             surveillanceLabel01.textColor = .systemGreen
             
+            if sender.text!.count >= 3 && textfield02.text!.count >= 5 && textfield03.text!.count >= 8{
+                
+                button01.layer.masksToBounds = false
+                button01.setTitle("AppStart", for: .normal)
+                button01.backgroundColor = .systemGreen
+            }
+            
         case false:
             sender.layer.borderColor = UIColor.systemRed.cgColor
             surveillanceLabel01.textColor = .systemRed
             surveillanceLabel01.text = "注意：3文字以上入力して下さい"
+            
+            button01.setTitle("NotStart", for: .normal)
+            button01.backgroundColor = .systemRed
         }
         
     }
@@ -107,10 +116,20 @@ class ViewController: UIViewController {
             surveillanceLabel02.text = "入力完了"
             surveillanceLabel02.textColor = .systemGreen
             
+            if textfield01.text!.count >= 3 && sender.text!.count >= 5 && textfield03.text!.count >= 8{
+                
+                button01.layer.masksToBounds = false
+                button01.setTitle("AppStart", for: .normal)
+                button01.backgroundColor = .systemGreen
+            }
+            
         case false:
             sender.layer.borderColor = UIColor.systemRed.cgColor
             surveillanceLabel02.textColor = .systemRed
             surveillanceLabel02.text = "注意：5文字以上入力して下さい"
+            
+            button01.setTitle("NotStart", for: .normal)
+            button01.backgroundColor = .systemRed
         }
     }
 
@@ -123,14 +142,29 @@ class ViewController: UIViewController {
             surveillanceLabel03.text = "入力完了"
             surveillanceLabel03.textColor = .systemGreen
             
+            if textfield01.text!.count >= 3 && textfield02.text!.count >= 5 && sender.text!.count >= 8{
+                
+                button01.layer.masksToBounds = false
+                button01.setTitle("AppStart", for: .normal)
+                button01.backgroundColor = .systemGreen
+            }
+            
+            
         case false:
             sender.layer.borderColor = UIColor.systemRed.cgColor
             surveillanceLabel03.textColor = .systemRed
             surveillanceLabel03.text = "注意：8文字以上入力して下さい"
+            
+            button01.setTitle("Not Start", for: .normal)
+            button01.backgroundColor = .systemRed
         }
     }
 
     @objc func showIndicator(sender:UIButton){
+        
+        textfield01.isEnabled = false
+        textfield02.isEnabled = false
+        textfield03.isEnabled = false
         
         sender.setTitle("", for: .normal)
         
@@ -158,7 +192,13 @@ class ViewController: UIViewController {
                 sender.frame = CGRect(x: self.view.frame.minX + 20, y: sender.frame.origin.y, width: self.view.frame.maxX - 40, height: sender.frame.size.height)
                 sender.layer.cornerRadius = 20.0
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {sender.setTitle("AppStart", for: .normal)}
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    
+                    sender.setTitle("AppStart", for: .normal)
+                    self.textfield01.isEnabled = true
+                    self.textfield02.isEnabled = true
+                    self.textfield03.isEnabled = true
+                }
                 
             }, completion: nil)
             
